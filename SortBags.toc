@@ -3,5 +3,5 @@
 ## Notes: Sorts and stacks your items
 ## Notes-ruRU: Сортирует и складывает ваши предметы
 ## Author: shirsig
-## SavedVariablesPerCharacter: SortBagsRightToLeft
+## SavedVariablesPerCharacter: SortBagsRightToLeft, SortBagsIgnoreBags
 SortBags.lua
