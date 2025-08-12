@@ -453,15 +453,15 @@ function Item(container, position)
 
 		-- soulbound items
 		elseif soulbound then
-			tinsert(sortKey, 6)
+			tinsert(sortKey, 7)
 
 		-- reagents
 		elseif type == ITEM_TYPES[9] then
-			tinsert(sortKey, 7)
+			tinsert(sortKey, 9)
 
 		-- quest items
 		elseif quest then
-			tinsert(sortKey, 9)
+			tinsert(sortKey, 6)
 
 		-- consumables
 		elseif usable and type ~= ITEM_TYPES[1] and type ~= ITEM_TYPES[2] and type ~= ITEM_TYPES[8] or type == ITEM_TYPES[4] then
