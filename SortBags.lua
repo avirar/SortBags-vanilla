@@ -25,7 +25,8 @@ end
 local CONTAINERS
 
 function _G.SortBags()
-	CONTAINERS = {0, 1, 2, 3, 4}
+	-- CONTAINERS = {0, 1, 2, 3, 4}
+	CONTAINERS = {0, 1, 2}
 	Start()
 end
 
