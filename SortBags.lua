@@ -255,7 +255,8 @@ function TooltipInfo(container, position)
 		SortBagsTooltip:SetBagItem(container, position)
 	end
 
-	local charges, usable, soulbound, quest, conjured
+	local charges, usable, soulbound, quest, conjured,
+		  mining, skinning, herbalism = nil, nil, nil, nil, nil, false, false, false
 	for i = 1, SortBagsTooltip:NumLines() do
 		local text = getglobal('SortBagsTooltipTextLeft' .. i):GetText()
 
@@ -279,7 +280,7 @@ function TooltipInfo(container, position)
 		end
 	end
 
-	return charges or 1, usable, soulbound, question, conjured, mining, skinning, herbalism
+	return charges or 1, usable, soulbound, quest, conjured, mining, skinning, herbalism
 end
 
 function Sort()
