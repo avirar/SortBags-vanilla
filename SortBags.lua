@@ -270,10 +270,16 @@ function TooltipInfo(container, position)
 			quest = true
 		elseif text == ITEM_CONJURED then
 			conjured = true
+		elseif strfind(text, "Mining %+") then
+			mining = true
+		elseif strfind(text, "Skinning %+") then
+			skinning = true
+		elseif strfind(text, "Herbalism %+") then
+			herbalism = true
 		end
 	end
 
-	return charges or 1, usable, soulbound, quest, conjured
+	return charges or 1, usable, soulbound, question, conjured, mining, skinning, herbalism
 end
 
 function Sort()
@@ -427,7 +433,7 @@ function Item(container, position)
 		local _, _, itemID, enchantID, suffixID, uniqueID = strfind(link, 'item:(%d+):(%d*):(%d*):(%d*)')
 		itemID = tonumber(itemID)
 		local _, _, quality, _, type, subType, stack, invType = GetItemInfo(itemID)
-		local charges, usable, soulbound, quest, conjured = TooltipInfo(container, position)
+		local charges, usable, soulbound, quest , conjured, mining, skinning, herbalism = TooltipInfo( container, position )
 
 		local sortKey = {}
 
@@ -448,7 +454,7 @@ function Item(container, position)
 			tinsert(sortKey, 4)
 
 		-- tools
-		elseif TOOLS[itemID] then
+		elseif TOOLS[itemID] or mining or skinning or herbalism then
 			tinsert(sortKey, 5)
 
 		-- quest items
