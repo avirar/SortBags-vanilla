@@ -451,57 +451,49 @@ function Item(container, position)
 		elseif TOOLS[itemID] then
 			tinsert(sortKey, 5)
 
-		-- soul shards
-		elseif itemID == 6265 then
-			tinsert(sortKey, 14)
-
-		-- conjured items
-		elseif conjured then
-			tinsert(sortKey, 15)
+		-- quest items
+		elseif quest then
+			tinsert(sortKey, 6)
 
 		-- soulbound items
 		elseif soulbound then
 			tinsert(sortKey, 7)
 
-		-- reagents
-		elseif type == ITEM_TYPES[9] then
-			tinsert(sortKey, 9)
-
-		-- quest items
-		elseif quest then
-			tinsert(sortKey, 6)
-
 		-- consumables
 		elseif usable and type ~= ITEM_TYPES[1] and type ~= ITEM_TYPES[2] and type ~= ITEM_TYPES[8] or type == ITEM_TYPES[4] then
 			tinsert(sortKey, 8)
 
+		-- reagents
+		elseif type == ITEM_TYPES[9] then
+			tinsert(sortKey, 9)
+
 		-- enchanting materials
 		elseif ENCHANTING_MATERIALS[itemID] then
-			tinsert(sortKey, 11)
+			tinsert(sortKey, 10)
 
 		-- herbs
 		elseif HERBS[itemID] then
-			tinsert(sortKey, 12)
+			tinsert(sortKey, 11)
 
 		-- metal and stone
 		elseif METAL_AND_STONE[itemID] then
-			tinsert(sortKey, 13)
+			tinsert(sortKey, 12)
 
 		-- cloth
 		elseif CLOTH[itemID] then
-			tinsert(sortKey, 14)
+			tinsert(sortKey, 13)
 
 		-- gems
 		elseif GEMS[itemID] then
-			tinsert(sortKey, 15)
+			tinsert(sortKey, 14)
 
 		-- meat
 		elseif MEAT[itemID] then
-			tinsert(sortKey, 16)
+			tinsert(sortKey, 15)
 
 		-- higher quality
 		elseif quality > 1 then
-			tinsert(sortKey, 10)
+			tinsert(sortKey, 16)
 
 		-- common quality
 		elseif quality == 1 then
@@ -510,6 +502,15 @@ function Item(container, position)
 		-- junk
 		elseif quality == 0 then
 			tinsert(sortKey, 18)
+
+		-- soul shards
+		elseif itemID == 6265 then
+			tinsert(sortKey, 19)
+
+		-- conjured items
+		elseif conjured then
+			tinsert(sortKey, 20)
+
 		end
 		
 		tinsert(sortKey, ItemTypeKey(type))
