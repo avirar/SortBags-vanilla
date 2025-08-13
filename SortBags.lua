@@ -25,13 +25,26 @@ end
 local CONTAINERS
 
 function _G.SortBags()
-	-- CONTAINERS = {0, 1, 2, 3, 4}
-	CONTAINERS = {0, 1, 2}
-	Start()
+    local wanted = {0, 1, 2, 3, 4}
+    local filtered = {}
+    for _, bagId in ipairs(wanted) do
+        if not _G.IgnoreBags[bagId] then
+            tinsert(filtered, bagId)
+        end
+    end
+	CONTAINERS = filtered
+    Start()
 end
 
 function _G.SortBankBags()
-	CONTAINERS = {-1, 5, 6, 7, 8, 9, 10}
+	local wanted = {-1, 5, 6, 7, 8, 9, 10}
+    local filtered = {}
+    for _, bagId in ipairs(wanted) do
+        if not _G.IgnoreBags[bagId] then
+            tinsert(filtered, bagId)
+        end
+    end
+	CONTAINERS = filtered
 	Start()
 end
 
@@ -41,6 +54,34 @@ end
 
 function _G.SetSortBagsRightToLeft(enabled)
 	_G.SortBagsRightToLeft = enabled and 1 or nil
+end
+
+if not _G.IgnoreBags then
+   _G.IgnoreBags = {}
+end  
+
+function _G.GetIgnoreBags()
+    print("SortBags ignored bags:")
+    local hasAny = false
+    for bagId in pairs(_G.IgnoreBags) do
+        hasAny = true
+        print("  Bag "..bagId)
+    end
+
+    if not hasAny then
+        print("  (none)")
+    end
+
+    return _G.IgnoreBags
+end
+
+function _G.SetIgnoreBag(bagId, enabled)
+    _G.IgnoreBags[bagId] = enabled and 1 or nil
+    if enabled then
+        print("SortBags: Ignoring Bag "..bagId..".")
+    else
+        print("SortBags: Bag "..bagId.." is no longer ignored.")
+    end
 end
 
 local function set(...)
