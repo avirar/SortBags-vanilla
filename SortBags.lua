@@ -592,33 +592,33 @@ function Item(container, position)
 	end
 end
 
--- 1️⃣  Create a frame that will run our code when the UI is ready
-local initFrame = CreateFrame("Frame")
-initFrame:RegisterEvent("PLAYER_LOGIN")          -- or "BAG_UPDATE" if you prefer
-initFrame:SetScript("OnEvent", function(self, event)
-    -- 2️⃣  Make sure the bag frame exists
-    if not ContainerFrame1 then
-        -- If for some reason it still isn’t there, try again later
-        self:ScheduleTimer("OnEvent", 0.1, self, event)
-        return
-    end
-
-    -- 3️⃣  Create the button as a child of ContainerFrame1
+local function createSortButton()
+    -- 1️⃣  Create the button as a child of ContainerFrame1
     local sortBtn = CreateFrame("Button", "MyBagSortButton", ContainerFrame1, "UIPanelButtonTemplate")
-    -- sortBtn:SetSize(80, 22)                                 -- width, height
-    sortBtn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)  -- 10px from the top‑right corner
-    sortBtn:SetFrameLevel(ContainerFrame1:GetFrameLevel() + 1)  -- above the bag’s backdrop
+    sortBtn:SetSize(80, 22)
+    sortBtn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)
+    sortBtn:SetFrameLevel(ContainerFrame1:GetFrameLevel() + 1)
     sortBtn:SetText("Sort")
 
-    -- 4️⃣  What happens when you click it
-    sortBtn:SetScript("OnClick", function()
-        SortBags()          -- the function defined in your script
-    end)
-
-    -- 5️⃣  Show/hide the button with the bag frame
+    -- 2️⃣  Hook the bag frame’s OnShow/OnHide
     ContainerFrame1:HookScript("OnShow", function() sortBtn:Show() end)
     ContainerFrame1:HookScript("OnHide", function() sortBtn:Hide() end)
 
-    -- 6️⃣  Optional: make sure the button is visible immediately
-    sortBtn:Show()
+    -- 3️⃣  What happens when you click it
+    sortBtn:SetScript("OnClick", function() SortBags() end)
+
+    -- 4️⃣  Show it immediately if the bag is already open
+    if ContainerFrame1:IsShown() then sortBtn:Show() end
+end
+
+-- Run the function when the bag frames are guaranteed to exist
+local init = CreateFrame("Frame")
+init:RegisterEvent("PLAYER_LOGIN")
+init:SetScript("OnEvent", function(self)
+    -- If the bag frames are still nil, try again after a tiny delay
+    if not ContainerFrame1 then
+        self:ScheduleTimer("OnEvent", 0.1, self, "PLAYER_LOGIN")
+        return
+    end
+    createSortButton()
 end)
