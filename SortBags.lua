@@ -30,15 +30,16 @@ function _G.SortBags()
 
     -- Build a new list that skips ignored bags
     local filtered = {}
-    for _, bag in ipairs(wanted) do
-        if not _G.IgnoreBags[bag] then
-            tinsert(filtered, bag)
+    for _, bagId in ipairs(wanted) do
+        if not _G.IgnoreBags[bagId] then
+			print("[SortBags] Sorting bag "..bagId)
+            tinsert(filtered, bagId)
+        else
+            print("[SortBags] Skipping ignored bag "..bagId)
         end
     end
 
-    -- Tell the rest of the addon which bags to work on
-    CONTAINERS = filtered
-
+	CONTAINERS = filtered
     Start()
 end
 
