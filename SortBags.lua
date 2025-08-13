@@ -591,51 +591,46 @@ function Item(container, position)
 		return key
 	end
 end
---------------------------------------------------------------------
--- 1️⃣  Create the “Sort Bags” button
---------------------------------------------------------------------
-local function CreateSortButton()
-    -- 1.1  Make sure we only create it once
-    if _G.SortBagsButton then return end
 
-    -- 1.2  Create the button (parent = the first bag frame)
-    local btn = CreateFrame("Button", "SortBagsButton", ContainerFrame1, "SecureActionButtonTemplate")
-    _G.SortBagsButton = btn
+-- ------------------------------------------------------------------
+-- 1️⃣  Create the button
+-- ------------------------------------------------------------------
+local sortBtn = CreateFrame('Button', 'SortBagsButton', ContainerFrame1, 'UIPanelButtonTemplate')
+sortBtn:SetSize(24, 24)                                 -- width, height
+sortBtn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 30, -30)  -- 5px inset from the corner
+sortBtn:SetNormalTexture('Interface\\Buttons\\UI-Panel-Button-Up')   -- default button look
+sortBtn:SetHighlightTexture('Interface\\Buttons\\UI-Panel-Button-Highlight')
+sortBtn:SetPushedTexture('Interface\\Buttons\\UI-Panel-Button-Down')
 
-    -- 1.3  Size & position – tweak the offsets if you want it elsewhere
-    btn:SetSize(24, 24)
-    btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 30, -30)
+-- ------------------------------------------------------------------
+-- 2️⃣  Hook the click handler
+-- ------------------------------------------------------------------
+sortBtn:SetScript('OnClick', function()
+    -- `SortBags` is defined as a global function in your code
+    SortBags()
+end)
 
-    -- 1.4  Icon (you can swap the texture for anything you like)
-    local tex = btn:CreateTexture(nil, "OVERLAY")
-    tex:SetAllPoints()
-    tex:SetTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")   -- default WoW icon
+-- ------------------------------------------------------------------
+-- 3️⃣  Optional: show a tooltip when the mouse hovers over the button
+-- ------------------------------------------------------------------
+sortBtn:SetScript('OnEnter', function()
+    GameTooltip:SetOwner(sortBtn, 'ANCHOR_RIGHT')
+    GameTooltip:SetText('Sort Bags')
+    GameTooltip:Show()
+end)
 
-    -- 1.5  What happens when you click it
-    btn:SetScript("OnClick", function()
-        SortBags()          -- the function defined earlier in this file
-    end)
+sortBtn:SetScript('OnLeave', function()
+    GameTooltip:Hide()
+end)
 
-    btn:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
+-- ------------------------------------------------------------------
+-- 4️⃣  Keep the button in sync with the bag frame (hide when bag frame is hidden)
+-- ------------------------------------------------------------------
+hooksecurefunc(ContainerFrame1, 'SetShown', function(self, shown)
+    if shown then
+        sortBtn:Show()
+    else
+        sortBtn:Hide()
+    end
+end)
 
-    -- 1.7  Show / hide the button only when the bag frame is visible
-    hooksecurefunc(ContainerFrame1, "Show", function()
-        if this:GetID() == 0 then
-            btn:Show()
-        end
-    end)
-    hooksecurefunc(ContainerFrame1, "Hide", function()
-        btn:Hide()
-    end)
-
-    -- 1.8  Hide it initially (it will be shown when the bag opens)
-    btn:Hide()
-end
-
---------------------------------------------------------------------
--- 2️⃣  Call the helper once the addon has loaded
---------------------------------------------------------------------
--- Place this at the very end of the file (after the Item() function)
-CreateSortButton()
