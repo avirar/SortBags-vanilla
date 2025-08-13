@@ -627,7 +627,7 @@ local function CreateSortBagsButton()
     btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 50, -30)
 
     -- Click handler
-	btn:SetScript("OnClick", function(self, button, down)
+	btn:SetScript("OnClick", function()
 	    if button == "RightButton" then
 	        -- Right click: sort bank bags ONLY if bank is open
 	        if BankFrame and BankFrame:IsShown() then
