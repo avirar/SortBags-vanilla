@@ -618,7 +618,7 @@ local function CreateSortBagsButton()
 
     -- Create the button
     local btn = CreateFrame("Button", "SortBagsButton", ContainerFrame1, "UIPanelButtonTemplate")
-	-- btn:RegisterForClicks("AnyUp", "AnyDown")
+	btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     btn:SetWidth(16)
     btn:SetHeight(16)
     btn:SetText("S")
