@@ -210,6 +210,10 @@ do
 		Initialize()
 		timeout = GetTime() + 7
 		f:Show()
+        if _G.SortBagsButton then
+            _G.SortBagsButton:Disable()
+            _G.SortBagsButton:SetAlpha(0.5) -- make it look greyed out
+        end
 	end
 
 	local delay = 0
@@ -221,6 +225,10 @@ do
 			local complete = Sort()
 			if complete or GetTime() > timeout then
 				f:Hide()
+                if _G.SortBagsButton then
+                    _G.SortBagsButton:Enable()
+                    _G.SortBagsButton:SetAlpha(1) -- restore normal look
+                end
 				return
 			end
 			Stack()
@@ -619,6 +627,9 @@ local function CreateSortBagsButton()
     btn:SetScript("OnClick", function()
         SortBags()
     end)
+
+	-- Store globally for access
+    _G.SortBagsButton = btn
 end
 
 -- Run the function to create the button when the addon loads
