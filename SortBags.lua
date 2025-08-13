@@ -648,5 +648,6 @@ function Init()
         end
     end)
 end
-Init()
 print("pls show this at least")
+Init()
+
