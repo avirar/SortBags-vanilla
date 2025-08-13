@@ -214,10 +214,6 @@ do
             _G.SortBagsButton:Disable()
             _G.SortBagsButton:SetAlpha(0.5) -- make it look greyed out
         end
-		if _G.SortBankButton then
-			_G.SortBankButton:Enable()
-			_G.SortBankButton:SetAlpha(0.5) -- make it look greyed out
-		end
 	end
 
 	local delay = 0
@@ -232,10 +228,6 @@ do
                 if _G.SortBagsButton then
                     _G.SortBagsButton:Enable()
                     _G.SortBagsButton:SetAlpha(1) -- restore normal look
-                end
-                if _G.SortBankButton then
-                    _G.SortBankButton:Enable()
-                    _G.SortBankButton:SetAlpha(1) -- restore normal look
                 end
 				return
 			end
@@ -626,7 +618,6 @@ local function CreateSortBagsButton()
 
     -- Create the button
     local btn = CreateFrame("Button", "SortBagsButton", ContainerFrame1, "UIPanelButtonTemplate")
-	-- btn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
     btn:SetWidth(16)
     btn:SetHeight(16)
     btn:SetText("S")
@@ -635,8 +626,11 @@ local function CreateSortBagsButton()
     btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 50, -30)
 
     -- Click handler
-	btn:EnableMouse(true)
-	btn:SetScript("OnMouseDown", function(self, button)
+	btn:SetScript("OnClick", function()
+	    if BankFrame and BankFrame:IsShown() then
+	        SortBankBags()
+	        SortBags()
+	    else
 	        SortBags()
 	    end
 	end)
@@ -645,33 +639,5 @@ local function CreateSortBagsButton()
     _G.SortBagsButton = btn
 end
 
--- Bank button (attaches to BankFrame)
-local function CreateSortBankButton()
-    if not BankFrame then
-        local f = CreateFrame("Frame")
-        f:SetScript("OnUpdate", function()
-            if BankFrame then
-                CreateSortBankButton()
-                f:Hide()
-            end
-        end)
-        return
-    end
-
-    local btn = CreateFrame("Button", "SortBankButton", BankFrame, "UIPanelButtonTemplate")
-    btn:SetWidth(32)
-    btn:SetHeight(20)
-    btn:SetText("Sort")
-    btn:SetPoint("TOPRIGHT", BankFrame, "TOPRIGHT", -30, -10)
-
-    btn:SetScript("OnClick", function()
-        SortBankBags()
-    end)
-
-	-- Store globally for access
-    _G.SortBankButton = btn
-end
-
--- Run the function to create the buttons when the addon loads
+-- Run the function to create the button when the addon loads
 CreateSortBagsButton()
-CreateSortBankButton()
