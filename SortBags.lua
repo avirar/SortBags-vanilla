@@ -626,9 +626,14 @@ local function CreateSortBagsButton()
     btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 50, -30)
 
     -- Click handler
-    btn:SetScript("OnClick", function()
-        SortBags()
-    end)
+	btn:SetScript("OnClick", function()
+	    if BankFrame and BankFrame:IsShown() then
+	        SortBankBags()
+	        SortBags()
+	    else
+	        SortBags()
+	    end
+	end)
 
 	-- Store globally for access
     _G.SortBagsButton = btn
