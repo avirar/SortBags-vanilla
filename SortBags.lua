@@ -618,6 +618,7 @@ local function CreateSortBagsButton()
 
     -- Create the button
     local btn = CreateFrame("Button", "SortBagsButton", ContainerFrame1, "UIPanelButtonTemplate")
+	btn:RegisterForClicks("AnyUp", "AnyDown")
     btn:SetWidth(16)
     btn:SetHeight(16)
     btn:SetText("S")
@@ -626,7 +627,7 @@ local function CreateSortBagsButton()
     btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 50, -30)
 
     -- Click handler
-	btn:SetScript("OnClick", function()
+	btn:SetScript("OnClick", function(self, button, down)
 	    if button == "RightButton" then
 	        -- Right click: sort bank bags ONLY if bank is open
 	        if BankFrame and BankFrame:IsShown() then
