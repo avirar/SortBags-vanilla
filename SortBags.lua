@@ -607,7 +607,7 @@ local function createButton()
     sortBtn = CreateFrame("Button", "MyBagSortButton", ContainerFrame1,
                           "UIPanelButtonTemplate")
     -- sortBtn:SetSize(80, 22)
-    sortBtn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 20, -30)
+    sortBtn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", -400, -30)
     sortBtn:SetFrameLevel("OVERLAY")   -- above the backdrop
 	sortBtn:SetText("S")
 	sortBtn:EnableMouse(true)
