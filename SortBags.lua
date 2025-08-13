@@ -62,8 +62,6 @@ end
 
 function _G.GetIgnoreBags()
     print("SortBags ignored bags:")
-
-    -- If the table is empty, show a short message
     local hasAny = false
     for bagId in pairs(_G.IgnoreBags) do
         hasAny = true
@@ -79,8 +77,6 @@ end
 
 function _G.SetIgnoreBag(bagId, enabled)
     _G.IgnoreBags[bagId] = enabled and 1 or nil
-
-    -- Debug line – tells you what happened
     if enabled then
         print("SortBags: Ignoring Bag "..bagId..".")
     else
