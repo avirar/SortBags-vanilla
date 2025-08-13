@@ -592,62 +592,68 @@ function Item(container, position)
 	end
 end
 
--- ============================================================================
--- SortBags GUI Initialization
--- ============================================================================
-function Init()
-	print("SortBags addon loaded")
-    -- Create a dedicated frame to manage the GUI elements and their events.
-    -- This follows TurtleMail's pattern of using a central frame for event handling.
-    local sortBagsFrame = CreateFrame("Frame", "SortBagsGuiFrame")
-    sortBagsFrame:RegisterEvent("ADDON_LOADED")
+--[[ --------------------------------------------------------------
+   MyAddon – Sort‑Bags button
+   -------------------------------------------------------------- ]]
+local addonName, ns = ...
 
-    sortBagsFrame:SetScript("OnEvent", function(self, event, arg1)
-		print("SortBags ADDON_LOADED event triggered")
-        -- The ADDON_LOADED event fires for every addon. We must check if the loaded addon is "SortBags" before proceeding.
-        if event == "ADDON_LOADED" and arg1 == "SortBags" then
+--------------------------------------------------------------------
+-- 1.  Create the button (runs once)
+--------------------------------------------------------------------
+local function CreateSortButton()
+    local parent = ContainerFrame1
+    local btn = CreateFrame("Button", "MyAddonSortBagsButton", parent, "UIPanelButtonTemplate")
+    btn:SetSize(80, 22)
+    btn:SetText("Sort")
+    btn:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -6, -6)
 
-            -- 1. Create the Sort Button for the Bags
-			print("Creating sort button")
-            local bagSortButton = CreateFrame("Button", "SortBagsBagSortButton", ContainerFrame1, "UIPanelButtonTemplate")
-            bagSortButton:SetText("Sort")
-            bagSortButton:SetSize(58, 22)
-            -- Position the button on the main backpack frame (ContainerFrame1).
-            bagSortButton:SetPoint("BOTTOMLEFT", ContainerFrame1, "BOTTOMLEFT", 7, 34)
-            bagSortButton:SetScript("OnClick", function()
-                PlaySound("igMainMenuOptionCheckBoxOn")
-                SortBags()
-            end)
-            -- Store a reference to the button on the frame itself for later access.
-            self.bagSortButton = bagSortButton
-
-            -- 2. Update Event Handling
-            -- After the one-time setup is complete, we change the event handler to manage the button's visibility.
-            self:UnregisterEvent("ADDON_LOADED")
-            self:RegisterEvent("CURSOR_UPDATE")
-			self:RegisterEvent("BAG_UPDATE")
-            self:RegisterEvent("BAG_CLOSED")
-
-            self:SetScript("OnEvent", function(self, event)
-                -- This new event handler will manage showing and hiding the button.
-                if self.bagSortButton then
-                    -- We check the visibility of the button's parent frame, ContainerFrame1, directly.
-                    if ContainerFrame1 and ContainerFrame1:IsVisible() then
-						print("Showing sort button")
-                        self.bagSortButton:Show()
-                    else
-						print("Hiding sort button")
-                        self.bagSortButton:Hide()
-                    end
-                end
-            end)
-
-            -- 3. Set Initial State
-            -- Perform an initial visibility check in case the bags are already open when the addon loads (e.g., after a /reload).
-            self:GetScript("OnEvent")(self, "BAG_UPDATE")
-        end
+    btn:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_TOP")
+        GameTooltip:SetText("Sort all bags", 1, 1, 1)
+        GameTooltip:AddLine("Runs the same algorithm you get with /sortbags", nil, nil, nil, true)
+        GameTooltip:Show()
     end)
-end
-print("pls show this at least")
-Init()
+    btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
+    btn:SetScript("OnClick", function()
+        if ns.isSorting then return end
+        ns.isSorting = true
+        btn:Disable()
+        SortBags()
+    end)
+
+    -- hide Blizzard's built‑in button (optional)
+    if ContainerFrame1SortButton then ContainerFrame1SortButton:Hide() end
+
+    ns.SortButton = btn
+    return btn
+end
+
+--------------------------------------------------------------------
+-- 2.  Hook into ADDON_LOADED
+--------------------------------------------------------------------
+local loader = CreateFrame("Frame")
+loader:RegisterEvent("ADDON_LOADED")
+loader:SetScript("OnEvent", function(self, _, loaded)
+    if loaded ~= addonName then return end
+
+    CreateSortButton()
+
+    -- When your sorting loop finishes, re‑enable the button:
+    -- (you can also put this in the existing OnUpdate code)
+    local function OnSortFinished()
+        ns.isSorting = false
+        if ns.SortButton then ns.SortButton:Enable() end
+    end
+    -- Example: replace the `f:Hide()` line in your existing OnUpdate loop
+    -- with a call to OnSortFinished()
+    --   f:Hide()
+    --   OnSortFinished()
+
+    self:UnregisterEvent("ADDON_LOADED")
+end)
+
+--------------------------------------------------------------------
+-- 3.  (Optional) expose a flag for the OnUpdate loop
+--------------------------------------------------------------------
+ns.isSorting = false
