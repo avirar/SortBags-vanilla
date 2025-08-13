@@ -60,7 +60,7 @@ if not _G.IgnoreBags then
    _G.IgnoreBags = {}
 end  
 
-function _G.GetIgnoreBags()
+function _G.GetIgnoredBags()
     print("SortBags ignored bags:")
     local hasAny = false
     for bagId in pairs(_G.IgnoreBags) do
