@@ -616,12 +616,6 @@ local function CreateSortButton()
         SortBags()          -- the function defined earlier in this file
     end)
 
-    -- 1.6  Optional: a tiny tooltip
-    btn:SetScript("OnEnter", function()
-        GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Sort Bags")
-        GameTooltip:Show()
-    end)
     btn:SetScript("OnLeave", function()
         GameTooltip:Hide()
     end)
