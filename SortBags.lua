@@ -592,8 +592,10 @@ function Item(container, position)
 	end
 end
 
--- 1️⃣  Create the button only once, after the bag frame exists
-local sortBtn
+-- ------------------------------------------------------------------
+-- 1️⃣  Create the button (only once)
+-- ------------------------------------------------------------------
+local sortBtn   -- will hold the button once it exists
 
 local function createSortButton()
     if sortBtn then return end          -- already created
@@ -601,38 +603,38 @@ local function createSortButton()
 
     sortBtn = CreateFrame('Button', 'SortBagsButton', ContainerFrame1, 'UIPanelButtonTemplate')
     sortBtn:SetSize(24, 24)                       -- width, height
-    sortBtn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 30, -30)  -- 5px inset
+    sortBtn:SetPoint('TOPLEFT', ContainerFrame1, 'TOPLEFT', 30, -30)  -- 30px inset
     sortBtn:SetText('S')                          -- short label
-    sortBtn:SetScript('OnClick', function() SortBags() end)
+    sortBtn:SetScript('OnClick', SortBags)        -- call the built‑in function
 
     -- make sure it is above the bag’s backdrop
     sortBtn:SetFrameLevel(ContainerFrame1:GetFrameLevel() + 1)
 
-    -- optional: tooltip
+    -- optional tooltip
     sortBtn:SetScript('OnEnter', function()
         GameTooltip:SetOwner(sortBtn, 'ANCHOR_RIGHT')
         GameTooltip:SetText('Sort Bags')
         GameTooltip:Show()
     end)
-    sortBtn:SetScript('OnLeave', function() GameTooltip:Hide() end)
-
-    sortBtn:Show()
+    sortBtn:SetScript('OnLeave', GameTooltip.Hide)
 end
 
--- 2️⃣  Show the button when the bag frame is shown
-hooksecurefunc(ContainerFrame1, 'SetShown', function(self, shown)
+-- ------------------------------------------------------------------
+-- 2️⃣  Show / hide the button when the bag frame is shown / hidden
+-- ------------------------------------------------------------------
+hooksecurefunc('ContainerFrame1', 'SetShown', function(self, shown)
     if shown then
         createSortButton()
+        sortBtn:Show()
     else
         if sortBtn then sortBtn:Hide() end
     end
 end)
 
--- 3️⃣  Create it on login if the bag frame is already visible
-local f = CreateFrame('Frame')
-f:RegisterEvent('PLAYER_LOGIN')
-f:SetScript('OnEvent', function()
-    if ContainerFrame1 and ContainerFrame1:IsShown() then
-        createSortButton()
-    end
-end)
+-- ------------------------------------------------------------------
+-- 3️⃣  If the bags are already open when the addon loads, create the button immediately
+-- ------------------------------------------------------------------
+if ContainerFrame1 and ContainerFrame1:IsShown() then
+    createSortButton()
+    sortBtn:Show()
+end
