@@ -627,11 +627,13 @@ local function CreateSortBagsButton()
 
     -- Click handler
 	btn:SetScript("OnClick", function()
-	    if BankFrame and BankFrame:IsShown() then
-	        SortBankBags()
-	        SortBags()
+	    if button == "RightButton" then
+	        -- Right click: sort bank bags ONLY if bank is open
+	        if BankFrame and BankFrame:IsShown() then
+	            SortBankBags()
+	        end
 	    else
-	        SortBags()
+	    	SortBags()
 	    end
 	end)
 
