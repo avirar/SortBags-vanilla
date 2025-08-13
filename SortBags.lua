@@ -613,16 +613,7 @@ local function CreateSortBagsButton()
     btn:SetText("S")
     
     -- Position the button (top right corner, adjust as needed)
-    btn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -30, -10)
-
-    -- Tooltip
-    btn:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-        GameTooltip:SetText("Sort Bags", 1, 1, 1)
-    end)
-    btn:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
+    btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 30, -30)
 
     -- Click handler
     btn:SetScript("OnClick", function()
