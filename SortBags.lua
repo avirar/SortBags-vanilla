@@ -596,12 +596,14 @@ end
 -- SortBags GUI Initialization
 -- ============================================================================
 do
+	print("SortBags addon loaded")
     -- Create a dedicated frame to manage the GUI elements and their events.
     -- This follows TurtleMail's pattern of using a central frame for event handling.
     local sortBagsFrame = CreateFrame("Frame", "SortBagsGuiFrame")
     sortBagsFrame:RegisterEvent("ADDON_LOADED")
 
     sortBagsFrame:SetScript("OnEvent", function(self, event, arg1)
+		print("SortBags ADDON_LOADED event triggered")
         -- The ADDON_LOADED event fires for every addon. We must check if the loaded addon is "SortBags" before proceeding.
         if event == "ADDON_LOADED" and arg1 == "SortBags" then
 
