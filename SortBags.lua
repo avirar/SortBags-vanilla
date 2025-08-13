@@ -1,6 +1,6 @@
 local _G, _M = getfenv(0), {}
 setfenv(1, setmetatable(_M, {__index=_G}))
-print("SortBags 1")
+
 CreateFrame('GameTooltip', 'SortBagsTooltip', nil, 'GameTooltipTemplate')
 
 local function IsPlayingOnTurtleWoW()
@@ -473,7 +473,7 @@ function ContainerClass(container)
 		end
 	end
 end
-print("SortBags 2")
+
 function Item(container, position)
 	local link = GetContainerItemLink(container, position)
 	if link then
@@ -608,12 +608,12 @@ local function CreateSortBagsButton()
 
     -- Create the button
     local btn = CreateFrame("Button", "SortBagsButton", ContainerFrame1, "UIPanelButtonTemplate")
-    btn:SetWidth(24)
-    btn:SetHeight(24)
+    btn:SetWidth(16)
+    btn:SetHeight(16)
     btn:SetText("S")
     
     -- Position the button (top right corner, adjust as needed)
-    btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 30, -30)
+    btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 50, -30)
 
     -- Click handler
     btn:SetScript("OnClick", function()
