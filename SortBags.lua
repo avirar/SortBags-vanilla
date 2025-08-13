@@ -605,7 +605,7 @@ initFrame:SetScript("OnEvent", function(self, event)
 
     -- 3️⃣  Create the button as a child of ContainerFrame1
     local sortBtn = CreateFrame("Button", "MyBagSortButton", ContainerFrame1, "UIPanelButtonTemplate")
-    sortBtn:SetSize(80, 22)                                 -- width, height
+    -- sortBtn:SetSize(80, 22)                                 -- width, height
     sortBtn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)  -- 10px from the top‑right corner
     sortBtn:SetFrameLevel(ContainerFrame1:GetFrameLevel() + 1)  -- above the bag’s backdrop
     sortBtn:SetText("Sort")
