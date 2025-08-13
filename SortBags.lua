@@ -214,6 +214,10 @@ do
             _G.SortBagsButton:Disable()
             _G.SortBagsButton:SetAlpha(0.5) -- make it look greyed out
         end
+		if _G.SortBankButton then
+			_G.SortBankButton:Enable()
+			_G.SortBankButton:SetAlpha(0.5) -- make it look greyed out
+		end
 	end
 
 	local delay = 0
@@ -228,6 +232,10 @@ do
                 if _G.SortBagsButton then
                     _G.SortBagsButton:Enable()
                     _G.SortBagsButton:SetAlpha(1) -- restore normal look
+                end
+                if _G.SortBankButton then
+                    _G.SortBankButton:Enable()
+                    _G.SortBankButton:SetAlpha(1) -- restore normal look
                 end
 				return
 			end
@@ -629,12 +637,6 @@ local function CreateSortBagsButton()
     -- Click handler
 	btn:EnableMouse(true)
 	btn:SetScript("OnMouseDown", function(self, button)
-	    print("OnMouseDown", button)
-	    if button == "RightButton" then
-	        if BankFrame and BankFrame:IsShown() then
-	            SortBankBags()
-	        end
-	    else
 	        SortBags()
 	    end
 	end)
@@ -643,5 +645,33 @@ local function CreateSortBagsButton()
     _G.SortBagsButton = btn
 end
 
--- Run the function to create the button when the addon loads
+-- Bank button (attaches to BankFrame)
+local function CreateSortBankButton()
+    if not BankFrame then
+        local f = CreateFrame("Frame")
+        f:SetScript("OnUpdate", function()
+            if BankFrame then
+                CreateSortBankButton()
+                f:Hide()
+            end
+        end)
+        return
+    end
+
+    local btn = CreateFrame("Button", "SortBankButton", BankFrame, "UIPanelButtonTemplate")
+    btn:SetWidth(32)
+    btn:SetHeight(20)
+    btn:SetText("Sort")
+    btn:SetPoint("TOPRIGHT", BankFrame, "TOPRIGHT", -30, -10)
+
+    btn:SetScript("OnClick", function()
+        SortBankBags()
+    end)
+
+	-- Store globally for access
+    _G.SortBankButton = btn
+end
+
+-- Run the function to create the buttons when the addon loads
 CreateSortBagsButton()
+CreateSortBankButton()
