@@ -597,7 +597,7 @@ print("Creating sort button")
 -- Size & position – tweak the numbers if you want a different look
 sortBtn:SetSize(80, 22)                                 -- width, height
 sortBtn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)  -- 10px from the top‑right corner
-
+sortBtn:SetFrameStrata("TOOLTIP")
 -- Text that appears on the button
 sortBtn:SetText("Sort")
 
