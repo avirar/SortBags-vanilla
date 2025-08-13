@@ -25,23 +25,26 @@ end
 local CONTAINERS
 
 function _G.SortBags()
-    -- The bags you want to consider (currently 0,1,2)
     local wanted = {0, 1, 2, 3, 4}
-
-    -- Build a new list that skips ignored bags
     local filtered = {}
     for _, bagId in ipairs(wanted) do
         if not _G.IgnoreBags[bagId] then
             tinsert(filtered, bagId)
         end
     end
-
 	CONTAINERS = filtered
     Start()
 end
 
 function _G.SortBankBags()
-	CONTAINERS = {-1, 5, 6, 7, 8, 9, 10}
+	local wanted = {-1, 5, 6, 7, 8, 9, 10}
+    local filtered = {}
+    for _, bagId in ipairs(wanted) do
+        if not _G.IgnoreBags[bagId] then
+            tinsert(filtered, bagId)
+        end
+    end
+	CONTAINERS = filtered
 	Start()
 end
 
@@ -79,9 +82,9 @@ function _G.SetIgnoreBag(bagId, enabled)
 
     -- Debug line – tells you what happened
     if enabled then
-        print("[SortBags] Bag "..bagId.." has been marked as ignored.")
+        print("SortBags: Ignoring Bag "..bagId..".")
     else
-        print("[SortBags] Bag "..bagId.." is no longer ignored.")
+        print("SortBags: Bag "..bagId.." is no longer ignored.")
     end
 end
 
