@@ -604,7 +604,7 @@ local function CreateSortButton()
 
     -- 1.3  Size & position – tweak the offsets if you want it elsewhere
     btn:SetSize(24, 24)
-    btn:SetPoint("LEFT", search, "LEFT", 3, 0)
+    btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 10, -30)
 
     -- 1.4  Icon (you can swap the texture for anything you like)
     local tex = btn:CreateTexture(nil, "OVERLAY")
