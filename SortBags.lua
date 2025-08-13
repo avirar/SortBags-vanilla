@@ -592,24 +592,33 @@ function Item(container, position)
 	end
 end
 
-local sortBtn = CreateFrame("Button", "MyBagSortButton", ContainerFrame1, "UIPanelButtonTemplate")
-print("Creating sort button")
--- Size & position – tweak the numbers if you want a different look
-sortBtn:SetSize(80, 22)                                 -- width, height
-sortBtn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)  -- 10px from the top‑right corner
-sortBtn:SetFrameStrata("TOOLTIP")
--- Text that appears on the button
-sortBtn:SetText("Sort")
+-- 1️⃣  Create a frame that will run our code when the UI is ready
+local initFrame = CreateFrame("Frame")
+initFrame:RegisterEvent("PLAYER_LOGIN")          -- or "BAG_UPDATE" if you prefer
+initFrame:SetScript("OnEvent", function(self, event)
+    -- 2️⃣  Make sure the bag frame exists
+    if not ContainerFrame1 then
+        -- If for some reason it still isn’t there, try again later
+        self:ScheduleTimer("OnEvent", 0.1, self, event)
+        return
+    end
 
--- ------------------------------------------------------------------
--- 2.  Make it do something when clicked
--- ------------------------------------------------------------------
-sortBtn:SetScript("OnClick", function()
-    SortBags()          -- the Blizzard function that re‑orders all bags
+    -- 3️⃣  Create the button as a child of ContainerFrame1
+    local sortBtn = CreateFrame("Button", "MyBagSortButton", ContainerFrame1, "UIPanelButtonTemplate")
+    sortBtn:SetSize(80, 22)                                 -- width, height
+    sortBtn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)  -- 10px from the top‑right corner
+    sortBtn:SetFrameLevel(ContainerFrame1:GetFrameLevel() + 1)  -- above the bag’s backdrop
+    sortBtn:SetText("Sort")
+
+    -- 4️⃣  What happens when you click it
+    sortBtn:SetScript("OnClick", function()
+        SortBags()          -- the function defined in your script
+    end)
+
+    -- 5️⃣  Show/hide the button with the bag frame
+    ContainerFrame1:HookScript("OnShow", function() sortBtn:Show() end)
+    ContainerFrame1:HookScript("OnHide", function() sortBtn:Hide() end)
+
+    -- 6️⃣  Optional: make sure the button is visible immediately
+    sortBtn:Show()
 end)
-
--- ------------------------------------------------------------------
--- 3.  Optional: show/hide the button with the bag frame
--- ------------------------------------------------------------------
-ContainerFrame1:HookScript("OnShow", function() sortBtn:Show() end)
-ContainerFrame1:HookScript("OnHide", function() sortBtn:Hide() end)
