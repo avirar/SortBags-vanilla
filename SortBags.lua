@@ -1,6 +1,6 @@
 local _G, _M = getfenv(0), {}
 setfenv(1, setmetatable(_M, {__index=_G}))
-
+print("SortBags 1")
 CreateFrame('GameTooltip', 'SortBagsTooltip', nil, 'GameTooltipTemplate')
 
 local function IsPlayingOnTurtleWoW()
@@ -473,7 +473,7 @@ function ContainerClass(container)
 		end
 	end
 end
-
+print("SortBags 2")
 function Item(container, position)
 	local link = GetContainerItemLink(container, position)
 	if link then
