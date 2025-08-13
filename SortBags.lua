@@ -35,8 +35,6 @@ function _G.SortBankBags()
 	Start()
 end
 
--- _G.IgnoreBags = {}
-
 function _G.GetSortBagsRightToLeft(enabled)
 	return SortBagsRightToLeft
 end
@@ -45,12 +43,29 @@ function _G.SetSortBagsRightToLeft(enabled)
 	_G.SortBagsRightToLeft = enabled and 1 or nil
 end
 
-function _G.GetIgnoreBags(enabled)
-	return _G.IgnoreBags
+if not _G.IgnoreBags then
+   _G.IgnoreBags = {}
+end  
+
+function _G.GetIgnoreBags()
+    -- Debug line – shows the current table contents
+    local t = {}
+    for k in pairs(_G.IgnoreBags) do
+        tinsert(t, k)
+    end
+    print("[SortBags] GetIgnoreBags called – ignored bags:", table.concat(t, ", "))
+    return _G.IgnoreBags
 end
 
 function _G.SetIgnoreBag(bagId, enabled)
-	_G.IgnoreBags[bagId] = enabled and 1 or nil
+    _G.IgnoreBags[bagId] = enabled and 1 or nil
+
+    -- Debug line – tells you what happened
+    if enabled then
+        print("[SortBags] Bag "..bagId.." has been marked as ignored.")
+    else
+        print("[SortBags] Bag "..bagId.." is no longer ignored.")
+    end
 end
 
 local function set(...)
