@@ -48,12 +48,19 @@ if not _G.IgnoreBags then
 end  
 
 function _G.GetIgnoreBags()
-    -- Debug line – shows the current table contents
-    local t = {}
-    for k in pairs(_G.IgnoreBags) do
-        tinsert(t, k)
+    print("[SortBags] GetIgnoreBags called – ignored bags:")
+
+    -- If the table is empty, show a short message
+    local hasAny = false
+    for bagId in pairs(_G.IgnoreBags) do
+        hasAny = true
+        print("  Bag "..bagId)
     end
-    print("[SortBags] GetIgnoreBags called – ignored bags:", table.concat(t, ", "))
+
+    if not hasAny then
+        print("  (none)")
+    end
+
     return _G.IgnoreBags
 end
 
