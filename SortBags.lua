@@ -210,6 +210,10 @@ do
 		Initialize()
 		timeout = GetTime() + 7
 		f:Show()
+        if _G.SortBagsButton then
+            _G.SortBagsButton:Disable()
+            _G.SortBagsButton:SetAlpha(0.5) -- make it look greyed out
+        end
 	end
 
 	local delay = 0
@@ -221,6 +225,10 @@ do
 			local complete = Sort()
 			if complete or GetTime() > timeout then
 				f:Hide()
+                if _G.SortBagsButton then
+                    _G.SortBagsButton:Enable()
+                    _G.SortBagsButton:SetAlpha(1) -- restore normal look
+                end
 				return
 			end
 			Stack()
@@ -591,3 +599,38 @@ function Item(container, position)
 		return key
 	end
 end
+
+local function CreateSortBagsButton()
+    -- Wait for the backpack frame to exist
+    if not ContainerFrame1 then
+        -- Try again next frame if not loaded yet
+        local f = CreateFrame("Frame")
+        f:SetScript("OnUpdate", function()
+            if ContainerFrame1 then
+                CreateSortBagsButton()
+                f:Hide()
+            end
+        end)
+        return
+    end
+
+    -- Create the button
+    local btn = CreateFrame("Button", "SortBagsButton", ContainerFrame1, "UIPanelButtonTemplate")
+    btn:SetWidth(16)
+    btn:SetHeight(16)
+    btn:SetText("S")
+    
+    -- Position the button (top right corner, adjust as needed)
+    btn:SetPoint("TOPLEFT", ContainerFrame1, "TOPLEFT", 50, -30)
+
+    -- Click handler
+    btn:SetScript("OnClick", function()
+        SortBags()
+    end)
+
+	-- Store globally for access
+    _G.SortBagsButton = btn
+end
+
+-- Run the function to create the button when the addon loads
+CreateSortBagsButton()
