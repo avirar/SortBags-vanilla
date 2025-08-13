@@ -35,12 +35,22 @@ function _G.SortBankBags()
 	Start()
 end
 
+_G.IgnoreBags = {}
+
 function _G.GetSortBagsRightToLeft(enabled)
 	return SortBagsRightToLeft
 end
 
 function _G.SetSortBagsRightToLeft(enabled)
 	_G.SortBagsRightToLeft = enabled and 1 or nil
+end
+
+function _G.GetIgnoreBags(enabled)
+	return _G.IgnoreBags
+end
+
+function _G.SetIgnoreBag(bagId, enabled)
+	_G.IgnoreBags[bagId] = enabled and 1 or nil
 end
 
 local function set(...)
