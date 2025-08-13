@@ -35,7 +35,7 @@ function _G.SortBankBags()
 	Start()
 end
 
-_G.IgnoreBags = {}
+-- _G.IgnoreBags = {}
 
 function _G.GetSortBagsRightToLeft(enabled)
 	return SortBagsRightToLeft
