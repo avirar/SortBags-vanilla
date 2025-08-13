@@ -592,49 +592,24 @@ function Item(container, position)
 	end
 end
 
--- ------------------------------------------------------------------
--- 1️⃣  Create the button (only once)
--- ------------------------------------------------------------------
-local sortBtn   -- will hold the button once it exists
+local sortBtn = CreateFrame("Button", "MyBagSortButton", ContainerFrame1, "UIPanelButtonTemplate")
 
-local function createSortButton()
-    if sortBtn then return end          -- already created
-    if not ContainerFrame1 then return end   -- frame not ready yet
+-- Size & position – tweak the numbers if you want a different look
+sortBtn:SetSize(80, 22)                                 -- width, height
+sortBtn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)  -- 10px from the top‑right corner
 
-    sortBtn = CreateFrame('Button', 'SortBagsButton', ContainerFrame1, 'UIPanelButtonTemplate')
-    sortBtn:SetSize(24, 24)                       -- width, height
-    sortBtn:SetPoint('TOPLEFT', ContainerFrame1, 'TOPLEFT', 30, -30)  -- 30px inset
-    sortBtn:SetText('S')                          -- short label
-    sortBtn:SetScript('OnClick', SortBags)        -- call the built‑in function
-
-    -- make sure it is above the bag’s backdrop
-    sortBtn:SetFrameLevel(ContainerFrame1:GetFrameLevel() + 1)
-
-    -- optional tooltip
-    sortBtn:SetScript('OnEnter', function()
-        GameTooltip:SetOwner(sortBtn, 'ANCHOR_RIGHT')
-        GameTooltip:SetText('Sort Bags')
-        GameTooltip:Show()
-    end)
-    sortBtn:SetScript('OnLeave', GameTooltip.Hide)
-end
+-- Text that appears on the button
+sortBtn:SetText("Sort")
 
 -- ------------------------------------------------------------------
--- 2️⃣  Show / hide the button when the bag frame is shown / hidden
+-- 2.  Make it do something when clicked
 -- ------------------------------------------------------------------
-hooksecurefunc('ContainerFrame1', 'SetShown', function(self, shown)
-    if shown then
-        createSortButton()
-        sortBtn:Show()
-    else
-        if sortBtn then sortBtn:Hide() end
-    end
+sortBtn:SetScript("OnClick", function()
+    SortBags()          -- the Blizzard function that re‑orders all bags
 end)
 
 -- ------------------------------------------------------------------
--- 3️⃣  If the bags are already open when the addon loads, create the button immediately
+-- 3.  Optional: show/hide the button with the bag frame
 -- ------------------------------------------------------------------
-if ContainerFrame1 and ContainerFrame1:IsShown() then
-    createSortButton()
-    sortBtn:Show()
-end
+ContainerFrame1:HookScript("OnShow", function() sortBtn:Show() end)
+ContainerFrame1:HookScript("OnHide", function() sortBtn:Hide() end)
