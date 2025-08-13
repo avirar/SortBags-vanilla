@@ -25,9 +25,21 @@ end
 local CONTAINERS
 
 function _G.SortBags()
-	-- CONTAINERS = {0, 1, 2, 3, 4}
-	CONTAINERS = {0, 1, 2}
-	Start()
+    -- The bags you want to consider (currently 0,1,2)
+    local wanted = {0, 1, 2}
+
+    -- Build a new list that skips ignored bags
+    local filtered = {}
+    for _, bag in ipairs(wanted) do
+        if not _G.IgnoreBags[bag] then
+            tinsert(filtered, bag)
+        end
+    end
+
+    -- Tell the rest of the addon which bags to work on
+    CONTAINERS = filtered
+
+    Start()
 end
 
 function _G.SortBankBags()
