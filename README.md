@@ -16,6 +16,6 @@ Bank bagIds:       -1, 5, 6, 7, 8, 9, 10
 /run SetIgnoreBag(bagId, true) -- Ignore a bagId
 /run SetIgnoreBag(bagId, false) -- Unignores a bagId
 /run SetIgnoreBag(bagId) -- Toggles ignoring a bagId
-/run GetIgnoreBags() -- Report all ignored bagIds
+/run GetIgnoredBags() -- Report all ignored bagIds
 
 ```
