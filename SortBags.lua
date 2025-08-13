@@ -26,16 +26,13 @@ local CONTAINERS
 
 function _G.SortBags()
     -- The bags you want to consider (currently 0,1,2)
-    local wanted = {0, 1, 2}
+    local wanted = {0, 1, 2, 3, 4}
 
     -- Build a new list that skips ignored bags
     local filtered = {}
     for _, bagId in ipairs(wanted) do
         if not _G.IgnoreBags[bagId] then
-			print("[SortBags] Sorting bag "..bagId)
             tinsert(filtered, bagId)
-        else
-            print("[SortBags] Skipping ignored bag "..bagId)
         end
     end
 
@@ -61,7 +58,7 @@ if not _G.IgnoreBags then
 end  
 
 function _G.GetIgnoreBags()
-    print("[SortBags] GetIgnoreBags called – ignored bags:")
+    print("SortBags ignored bags:")
 
     -- If the table is empty, show a short message
     local hasAny = false
