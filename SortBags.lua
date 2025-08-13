@@ -595,7 +595,7 @@ end
 -- ============================================================================
 -- SortBags GUI Initialization
 -- ============================================================================
-function SortBags:Init()
+function Init()
 	print("SortBags addon loaded")
     -- Create a dedicated frame to manage the GUI elements and their events.
     -- This follows TurtleMail's pattern of using a central frame for event handling.
@@ -648,4 +648,5 @@ function SortBags:Init()
         end
     end)
 end
-SortBags:Init()
+Init()
+print("pls show this at least")
