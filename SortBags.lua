@@ -591,3 +591,57 @@ function Item(container, position)
 		return key
 	end
 end
+--------------------------------------------------------------------
+-- 1️⃣  Create the “Sort Bags” button
+--------------------------------------------------------------------
+local function CreateSortButton()
+    -- 1.1  Make sure we only create it once
+    if _G.SortBagsButton then return end
+
+    -- 1.2  Create the button (parent = the first bag frame)
+    local btn = CreateFrame("Button", "SortBagsButton", ContainerFrame1, "SecureActionButtonTemplate")
+    _G.SortBagsButton = btn
+
+    -- 1.3  Size & position – tweak the offsets if you want it elsewhere
+    btn:SetSize(24, 24)
+    btn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)
+
+    -- 1.4  Icon (you can swap the texture for anything you like)
+    local tex = btn:CreateTexture(nil, "OVERLAY")
+    tex:SetAllPoints()
+    tex:SetTexture("Interface\\Buttons\\UI-Panel-MinimizeButton-Up")   -- default WoW icon
+
+    -- 1.5  What happens when you click it
+    btn:SetScript("OnClick", function()
+        SortBags()          -- the function defined earlier in this file
+    end)
+
+    -- 1.6  Optional: a tiny tooltip
+    btn:SetScript("OnEnter", function()
+        GameTooltip:SetOwner(btn, "ANCHOR_RIGHT")
+        GameTooltip:SetText("Sort Bags")
+        GameTooltip:Show()
+    end)
+    btn:SetScript("OnLeave", function()
+        GameTooltip:Hide()
+    end)
+
+    -- 1.7  Show / hide the button only when the bag frame is visible
+    hooksecurefunc(ContainerFrame1, "Show", function()
+        if this:GetID() == 0 then
+            btn:Show()
+        end
+    end)
+    hooksecurefunc(ContainerFrame1, "Hide", function()
+        btn:Hide()
+    end)
+
+    -- 1.8  Hide it initially (it will be shown when the bag opens)
+    btn:Hide()
+end
+
+--------------------------------------------------------------------
+-- 2️⃣  Call the helper once the addon has loaded
+--------------------------------------------------------------------
+-- Place this at the very end of the file (after the Item() function)
+CreateSortButton()
