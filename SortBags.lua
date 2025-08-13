@@ -606,6 +606,7 @@ do
         if event == "ADDON_LOADED" and arg1 == "SortBags" then
 
             -- 1. Create the Sort Button for the Bags
+			print("Creating sort button")
             local bagSortButton = CreateFrame("Button", "SortBagsBagSortButton", ContainerFrame1, "UIPanelButtonTemplate")
             bagSortButton:SetText("Sort")
             bagSortButton:SetSize(58, 22)
@@ -630,8 +631,10 @@ do
                 if self.bagSortButton then
                     -- We check the visibility of the button's parent frame, ContainerFrame1, directly.
                     if ContainerFrame1 and ContainerFrame1:IsVisible() then
+						print("Showing sort button")
                         self.bagSortButton:Show()
                     else
+						print("Hiding sort button")
                         self.bagSortButton:Hide()
                     end
                 end
