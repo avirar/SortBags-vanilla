@@ -76,7 +76,12 @@ function _G.GetIgnoreBags()
 end
 
 function _G.SetIgnoreBag(bagId, enabled)
+    if enabled == nil then
+        enabled = not (_G.IgnoreBags[bagId] ~= nil)
+    end
+
     _G.IgnoreBags[bagId] = enabled and 1 or nil
+
     if enabled then
         print("SortBags: Ignoring Bag "..bagId..".")
     else
