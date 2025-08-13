@@ -310,7 +310,7 @@ function TooltipInfo(container, position)
 	end
 
 	local charges, usable, soulbound, quest, conjured,
-		  mining, skinning, herbalism = nil, nil, nil, nil, nil, false, false, false
+		  mining, skinning, herbalism, fishing = nil, nil, nil, nil, nil, false, false, false
 	for i = 1, SortBagsTooltip:NumLines() do
 		local text = getglobal('SortBagsTooltipTextLeft' .. i):GetText()
 
@@ -331,10 +331,12 @@ function TooltipInfo(container, position)
 			skinning = true
 		elseif strfind(text, "Herbalism %+") then
 			herbalism = true
+		elseif strfind(text, "Fishing %+") then
+			fishing = true
 		end
 	end
 
-	return charges or 1, usable, soulbound, quest, conjured, mining, skinning, herbalism
+	return charges or 1, usable, soulbound, quest, conjured, mining, skinning, herbalism, fishing
 end
 
 function Sort()
@@ -509,7 +511,7 @@ function Item(container, position)
 			tinsert(sortKey, 4)
 
 		-- tools
-		elseif TOOLS[itemID] or mining or skinning or herbalism then
+		elseif TOOLS[itemID] or mining or skinning or herbalism or fishing then
 			tinsert(sortKey, 5)
 
 		-- quest items
