@@ -595,7 +595,7 @@ end
 local function createSortButton()
     -- 1️⃣  Create the button as a child of ContainerFrame1
     local sortBtn = CreateFrame("Button", "MyBagSortButton", ContainerFrame1, "UIPanelButtonTemplate")
-    sortBtn:SetSize(80, 22)
+    -- sortBtn:SetSize(80, 22)
     sortBtn:SetPoint("TOPRIGHT", ContainerFrame1, "TOPRIGHT", -10, -10)
     sortBtn:SetFrameLevel(ContainerFrame1:GetFrameLevel() + 1)
     sortBtn:SetText("Sort")
